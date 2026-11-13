@@ -44,10 +44,11 @@ class StateTests(unittest.TestCase):
             current = sync_state.manifest(repos, pulls, NOW, refs={"sample": changed})
             self.assertTrue(sync_state.needs_build(previous, current, NOW))
 
-    def test_no_change_skips_build_but_daily_refresh_repairs_metadata_gaps(self):
+    def test_no_change_skips_build_without_expiring(self):
         current = sync_state.manifest([repository()], {"sample": [pull()]}, NOW)
-        self.assertFalse(sync_state.needs_build(current, current, NOW + timedelta(minutes=5)))
-        self.assertTrue(sync_state.needs_build(current, current, NOW + timedelta(days=1)))
+        for elapsed in (timedelta(minutes=5), timedelta(days=1), timedelta(days=365)):
+            with self.subTest(elapsed=elapsed):
+                self.assertFalse(sync_state.needs_build(current, current, NOW + elapsed))
         self.assertTrue(sync_state.needs_build(current, current, NOW - timedelta(seconds=1)))
 
     def test_push_metadata_and_pull_changes_trigger_build(self):
@@ -106,6 +107,18 @@ class StateTests(unittest.TestCase):
             req = opened.call_args.args[0]
             self.assertIsNone(req.get_header("Authorization"))
             self.assertIn("/sync.json?check=", req.full_url)
+
+    def test_cli_skips_unchanged_snapshot_older_than_a_day(self):
+        previous = sync_state.manifest([repository()], {"sample": []}, NOW - timedelta(days=365))
+        with tempfile.TemporaryDirectory() as directory:
+            output = Path(directory) / "output"
+            with patch("sys.argv", ["sync_state.py", "--github-output", str(output)]), \
+                    patch.object(sync_state, "published_manifest", return_value=previous), \
+                    patch.object(github_data, "repositories", return_value=[repository()]), \
+                    patch.object(github_data, "pull_requests", return_value=[]), \
+                    patch.object(github_data, "references", return_value=[]):
+                sync_state.main()
+                self.assertEqual(output.read_text(), "changed=false\n")
 
     def test_cli_writes_output_and_api_failure_never_marks_snapshot_current(self):
         with tempfile.TemporaryDirectory() as directory:

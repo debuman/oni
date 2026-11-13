@@ -42,8 +42,7 @@ def needs_build(previous, current, now=None):
         age = (now or datetime.now(timezone.utc)) - generated
     except (KeyError, TypeError, ValueError):
         return True
-    # Periodically reconcile the complete site even if the signatures match.
-    return age < timedelta(0) or age >= timedelta(days=1)
+    return age < timedelta(0)
 
 
 def published_manifest():
