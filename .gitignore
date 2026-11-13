@@ -1,0 +1,9 @@
+.cache/
+public/
+__pycache__/
+*.pyc
+*.log
+generator/target/
+.env
+.env.*
+!.env.example

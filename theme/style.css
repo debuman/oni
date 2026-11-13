@@ -1,0 +1,109 @@
+/* Copyright (c) 2026 debuman. SPDX-License-Identifier: MIT */
+
+html {
+    background: #111;
+    color: #fcfcfc;
+    font-family: monospace;
+}
+body { margin: 8px; font-size: 14px; }
+body * { font-family: inherit; }
+a { color: #5353ef; text-decoration: none; }
+a:target { background: #222; }
+
+.page {
+    width: min(100%, 800px);
+    margin-inline: auto;
+}
+.repository { margin-top: 32px; }
+.panel {
+    border: solid 1px #a8a8a8;
+    border-radius: 5px;
+    padding-block: 10px;
+    overflow-x: auto;
+}
+.catalog > .panel { width: 100%; margin-inline: -1px; }
+.repository > .panel, .commit-summary, .commit-diff { width: 100%; }
+.catalog-title { margin-inline: auto; }
+.repository-summary, .commit-summary > table, .commit-diff > table, #index, #log {
+    width: 100%;
+}
+.summary-text { color: #a8a8a8; }
+.page-content {
+    display: flow-root;
+    padding-top: 16px;
+    text-align: left;
+}
+.listing { margin-inline: auto; }
+.reference-title { text-align: center; }
+.page-footer {
+    padding-top: 10px;
+    margin-top: 16px;
+    text-align: center;
+    font-size: smaller;
+}
+
+table { border-spacing: 2px; text-align: left; }
+td {
+    padding-inline: 0.3em;
+    padding-block: 0;
+    vertical-align: top;
+}
+.listing td, .repository-summary td { white-space: nowrap; }
+#files td:nth-child(2), #index td:nth-child(2), #log td:nth-child(2),
+#tags td:nth-child(3) { white-space: normal; }
+.pull-requests { overflow-x: auto; }
+#pulls td:nth-child(2) { white-space: normal; min-width: 12em; }
+.commit-summary td, .commit-diff td { white-space: nowrap; }
+.num { text-align: right; }
+.listing tbody tr:hover td, #branches td:nth-child(3) { background: #2a2a2a; }
+
+h1, h2, h3, h4, h5, h6 { font-size: 1em; margin: 0; }
+h1 { display: inline; vertical-align: middle; }
+h2, img { vertical-align: middle; }
+hr { border: solid 1px #222; }
+pre {
+    overflow-x: auto;
+    padding: 10px;
+    border: solid 1px #7e7e7e;
+    border-radius: 4px;
+}
+code {
+    display: inline-block;
+    padding-inline: 10px;
+    border: solid 1px #7e7e7e;
+    border-radius: 5px;
+    background: #282828;
+    color: white;
+}
+img { max-width: 800px; }
+#blob .line { color: #333; }
+#blob .line:hover { color: #54fc54; }
+#blob .line:target { color: #eee; }
+.diff-add, .A { color: #00cd00; }
+.diff-remove, .D { color: #cd0000; }
+.diff-hunk { color: #00cdcd; }
+.commit-diff { margin-top: 16px; }
+.diff-total { border-bottom: solid 1px #222; }
+
+.readme { text-align: left; }
+.plain-readme {
+    border: 0;
+    padding: 0;
+    overflow: visible;
+    text-align: center;
+}
+.readme h1 { font-size: 1.5em; }
+.readme h2 { font-size: 1.25em; }
+.readme table {
+    border-collapse: collapse;
+    margin: 1em;
+}
+.readme th, .readme td {
+    border: solid 1px #a8a8a8;
+    padding: 0.25em 1em;
+}
+.readme td { white-space: nowrap; }
+@media (width <= 640px) {
+    .panel { padding: 0.5rem; }
+    .catalog > .panel { margin-inline: 0; }
+}

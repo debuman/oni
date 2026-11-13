@@ -1,0 +1,18 @@
+[package]
+name = "sqzer-stagit"
+version = "0.1.0"
+edition = "2021"
+license = "MIT"
+description = "A local static Git browser for oni.sqzer.com"
+publish = false
+
+[[bin]]
+name = "sqzer-stagit"
+path = "src/main.rs"
+
+[dependencies]
+ammonia = "=4.2.4"
+
+[profile.release]
+lto = true
+strip = true
